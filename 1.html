@@ -1,45 +1,198 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Simple Calculator</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Modern Calculator</title>
+
+  <style>
+    *{
+      margin:0;
+      padding:0;
+      box-sizing:border-box;
+      font-family:Arial, sans-serif;
+    }
+
+    body{
+      height:100vh;
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      background:linear-gradient(135deg,#141e30,#243b55);
+    }
+
+    .calculator{
+      width:340px;
+      padding:20px;
+      border-radius:20px;
+      background:rgba(255,255,255,0.08);
+      backdrop-filter:blur(10px);
+      box-shadow:0 8px 30px rgba(0,0,0,0.4);
+    }
+
+    .title{
+      text-align:center;
+      color:white;
+      margin-bottom:15px;
+      font-size:28px;
+      font-weight:bold;
+    }
+
+    #display{
+      width:100%;
+      height:70px;
+      border:none;
+      outline:none;
+      border-radius:12px;
+      padding:15px;
+      margin-bottom:18px;
+      font-size:32px;
+      text-align:right;
+      background:rgba(255,255,255,0.15);
+      color:white;
+    }
+
+    .buttons{
+      display:grid;
+      grid-template-columns:repeat(4,1fr);
+      gap:12px;
+    }
+
+    button{
+      height:65px;
+      border:none;
+      border-radius:15px;
+      font-size:22px;
+      font-weight:bold;
+      cursor:pointer;
+      transition:0.2s;
+      color:white;
+      background:rgba(255,255,255,0.12);
+    }
+
+    button:hover{
+      transform:scale(1.05);
+      background:rgba(255,255,255,0.22);
+    }
+
+    button:active{
+      transform:scale(0.95);
+    }
+
+    .operator{
+      background:#ff9800;
+    }
+
+    .clear{
+      background:#f44336;
+    }
+
+    .equal{
+      background:#00c853;
+      grid-row:span 2;
+      height:142px;
+    }
+
+    .zero{
+      grid-column:span 2;
+    }
+
+    .footer{
+      text-align:center;
+      color:white;
+      margin-top:15px;
+      font-size:14px;
+      opacity:0.8;
+    }
+  </style>
 </head>
+
 <body>
 
-    <div class="calculator">
-        <!-- Display Screen -->
-        <input type="text" id="display" readonly>
+  <div class="calculator">
 
-        <div class="buttons">
-            <!-- Top Row -->
-            <button onclick="clearDisplay()">C</button>
-            <button onclick="deleteLast()">DEL</button>
-            <button onclick="appendToDisplay('/')">/</button>
-            <button onclick="appendToDisplay('*')">×</button>
+    <div class="title">Calculator</div>
 
-            <!-- Numbers and Operators -->
-            <button onclick="appendToDisplay('7')">7</button>
-            <button onclick="appendToDisplay('8')">8</button>
-            <button onclick="appendToDisplay('9')">9</button>
-            <button onclick="appendToDisplay('-')">-</button>
+    <input type="text" id="display" readonly>
 
-            <button onclick="appendToDisplay('4')">4</button>
-            <button onclick="appendToDisplay('5')">5</button>
-            <button onclick="appendToDisplay('6')">6</button>
-            <button onclick="appendToDisplay('+')">+</button>
+    <div class="buttons">
 
-            <button onclick="appendToDisplay('1')">1</button>
-            <button onclick="appendToDisplay('2')">2</button>
-            <button onclick="appendToDisplay('3')">3</button>
-            <button onclick="calculate()" id="equals">=</button>
+      <button class="clear" onclick="clearDisplay()">C</button>
+      <button class="clear" onclick="deleteLast()">DEL</button>
+      <button class="operator" onclick="appendToDisplay('/')">÷</button>
+      <button class="operator" onclick="appendToDisplay('*')">×</button>
 
-            <!-- Bottom Row -->
-            <button onclick="appendToDisplay('0')" class="zero">0</button>
-            <button onclick="appendToDisplay('.')">.</button>
-        </div>
+      <button onclick="appendToDisplay('7')">7</button>
+      <button onclick="appendToDisplay('8')">8</button>
+      <button onclick="appendToDisplay('9')">9</button>
+      <button class="operator" onclick="appendToDisplay('-')">−</button>
+
+      <button onclick="appendToDisplay('4')">4</button>
+      <button onclick="appendToDisplay('5')">5</button>
+      <button onclick="appendToDisplay('6')">6</button>
+      <button class="operator" onclick="appendToDisplay('+')">+</button>
+
+      <button onclick="appendToDisplay('1')">1</button>
+      <button onclick="appendToDisplay('2')">2</button>
+      <button onclick="appendToDisplay('3')">3</button>
+
+      <button class="equal" onclick="calculate()">=</button>
+
+      <button class="zero" onclick="appendToDisplay('0')">0</button>
+      <button onclick="appendToDisplay('.')">.</button>
+
     </div>
-    <h1>Good Caclulator Speed Color Speed Colors and Efficient</h1>
+
+    <div class="footer">
+      Fast • Smooth • Modern Design
+    </div>
+
+  </div>
+
+  <script>
+    const display = document.getElementById("display");
+
+    function appendToDisplay(value){
+      display.value += value;
+    }
+
+    function clearDisplay(){
+      display.value = "";
+    }
+
+    function deleteLast(){
+      display.value = display.value.slice(0,-1);
+    }
+
+    function calculate(){
+      try{
+        display.value = eval(display.value);
+      }
+      catch{
+        display.value = "Error";
+      }
+    }
+
+    document.addEventListener("keydown",(e)=>{
+      const key = e.key;
+
+      if(!isNaN(key) || ['+','-','*','/','.'].includes(key)){
+        appendToDisplay(key);
+      }
+
+      if(key === "Enter"){
+        calculate();
+      }
+
+      if(key === "Backspace"){
+        deleteLast();
+      }
+
+      if(key === "Escape"){
+        clearDisplay();
+      }
+    });
+  </script>
 
 </body>
 </html>
